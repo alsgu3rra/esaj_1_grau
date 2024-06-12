@@ -8,6 +8,7 @@ from datetime import datetime
 import re
 import time
 
+
 data_e_hora_em_texto = datetime.now().strftime('%Y-%m-%d_%Hh%Mmin')
 
 lista_consulta = []
@@ -29,6 +30,7 @@ def ler_arquivo(path_do_arquivo):
             encontra_processos(line)
 
     print(f'Encontrei {len(lista_arquivos)} processos únicos.')
+
     print('Aguarde o processamento e a criação dos arquivos...')
 
     return lista_arquivos
@@ -47,6 +49,21 @@ def extrai_dados(lista_consulta):
         mais_detalhes_element = driver.find_element(By.ID, 'maisDetalhes')
         
         driver.execute_script("arguments[0].setAttribute('class', 'collapse show')", mais_detalhes_element)
+
+        assunto = "Não Encontrado"
+        foro = "Não Encontrado"
+        classe = "Não Encontrado"
+        vara = "Não Encontrado"
+        juiz = "Não Encontrado"
+        distribuicao = "Não Encontrado"
+        controle = "Não Encontrado"
+        area = "Não Encontrado"
+        valor_acao = "Não Encontrado"
+        requerentes = "Não Encontrado"
+        requeridos = "Não Encontrado"
+        autor = "Não Encontrado"
+        indiciado = "Não Encontrado"
+        averiguado = "Não Encontrado"
 
         try:
             assunto = driver.find_element(By.ID, 'assuntoProcesso').text
@@ -132,7 +149,7 @@ def extrai_dados(lista_consulta):
             link_partes = driver.find_element(By.ID, 'linkpartes')
             driver.execute_script("arguments[0].click();", link_partes)
         except:
-            print('Não foi possível expandir a seção de partes.')
+            pass
 
         try:
             indiciado_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Indiciado")]/../following-sibling::td[@class="nomeParteEAdvogado"]')
@@ -142,7 +159,6 @@ def extrai_dados(lista_consulta):
         except:
             print('Não Encontrado o Indiciado do processo')
 
-        # Extracting "Averiguado" information
         try:
             averiguado_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Averiguado")]/../following-sibling::td[@class="nomeParteEAdvogado"]')
             averiguado_text = averiguado_element.text.strip()
@@ -151,7 +167,12 @@ def extrai_dados(lista_consulta):
         except:
             print('Não Encontrado o Averiguado do processo')
 
+        lista_resultados.append([n_processo, assunto, foro, classe, vara, juiz, distribuicao, controle, area, valor_acao, requerentes, requeridos, autor, indiciado, averiguado])
+
         driver.quit()
+
+def criar_planilha():
+    columns = ['Número do processo', 'Assunto', 'Foro', 'Classe', 'Varé', 'Juiz', 'Distribuição', 'Controle', 'Área', 'Valor da Ação', 'Requerentes', 'Requeridos', 'Autor', 'Indiciado', 'Averiguado'] 
 
 def Main():
     root = Tk()
