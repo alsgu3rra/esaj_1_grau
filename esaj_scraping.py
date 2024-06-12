@@ -42,13 +42,11 @@ def extrai_dados(lista_consulta):
         driver = webdriver.Firefox(service=firefox_service, options=firefox_options)
         driver.get(f'https://esaj.tjsp.jus.br/cpopg/show.do?processo.codigo=9A0001V5X0000&processo.foro=334&processo.numero={n_processo}')
 
-        time.sleep(3)
+        time.sleep(1)
 
         mais_detalhes_element = driver.find_element(By.ID, 'maisDetalhes')
         
         driver.execute_script("arguments[0].setAttribute('class', 'collapse show')", mais_detalhes_element)
-
-        time.sleep(1)
 
         try:
             assunto = driver.find_element(By.ID, 'assuntoProcesso').text
@@ -133,7 +131,6 @@ def extrai_dados(lista_consulta):
         try:
             link_partes = driver.find_element(By.ID, 'linkpartes')
             driver.execute_script("arguments[0].click();", link_partes)
-            time.sleep(2)
         except:
             print('Não foi possível expandir a seção de partes.')
 
@@ -144,6 +141,15 @@ def extrai_dados(lista_consulta):
             print(f'Encontrado o Indiciado: {indiciado}')
         except:
             print('Não Encontrado o Indiciado do processo')
+
+        # Extracting "Averiguado" information
+        try:
+            averiguado_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Averiguado")]/../following-sibling::td[@class="nomeParteEAdvogado"]')
+            averiguado_text = averiguado_element.text.strip()
+            averiguado = averiguado_text.replace('\n', ', ')
+            print(f'Encontrado o Averiguado: {averiguado}')
+        except:
+            print('Não Encontrado o Averiguado do processo')
 
         driver.quit()
 
