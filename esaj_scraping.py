@@ -3,6 +3,8 @@ from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 from webdriver_manager.firefox import GeckoDriverManager
+from tkinter import filedialog, Tk
+from datetime import datetime
 import time
 
 
@@ -13,6 +15,9 @@ lista_resultados = []
 lista_erros = []
 lista_inconclusivos = []
 lista_arquivos = []
+
+root = Tk()
+root.withdraw()
 
 def Main():
   firefox_service = Service(GeckoDriverManager().install())
