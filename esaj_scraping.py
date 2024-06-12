@@ -5,6 +5,7 @@ from selenium.webdriver.firefox.options import Options
 from webdriver_manager.firefox import GeckoDriverManager
 from tkinter import filedialog, Tk
 from datetime import datetime
+import re
 import time
 
 
@@ -18,20 +19,27 @@ lista_arquivos = []
 
 url = "https://esaj.tjsp.jus.br/cpopg"
 
+def encontra_processos (linha_de_texto):
+    resultado = re.findall(r'[0-9]{7}[-][0-9]{2}[.][0-9]{4}[.][8][.][2][6][.][0-9]{4}', linha_de_texto)
+
+    for r in resultado:
+        if r not in lista_arquivos:
+            lista_arquivos.append(r) 
+
 def abrir_navegador(url_site):
-  firefox_service = Service(GeckoDriverManager().install())
+    firefox_service = Service(GeckoDriverManager().install())
 
-  firefox_options = Options()
-  
-  firefox_options.headless = True
+    firefox_options = Options()
 
-  driver = webdriver.Firefox(service=firefox_service, options=firefox_options)
+    firefox_options.headless = True
 
-  driver.get(url_site)
+    driver = webdriver.Firefox(service=firefox_service, options=firefox_options)
 
-  time.sleep(5)
+    driver.get(url_site)
 
-  driver.quit()
+    time.sleep(5)
+
+    driver.quit()
 
 def Main():
   root = Tk()
