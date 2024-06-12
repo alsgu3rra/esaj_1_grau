@@ -16,10 +16,7 @@ lista_erros = []
 lista_inconclusivos = []
 lista_arquivos = []
 
-root = Tk()
-root.withdraw()
-
-def Main():
+def abrir_navegador():
   firefox_service = Service(GeckoDriverManager().install())
 
   firefox_options = Options()
@@ -35,6 +32,12 @@ def Main():
   time.sleep(5)
 
   driver.quit()
+
+def Main():
+  root = Tk()
+  root.withdraw()
+
+  file = filedialog.askopenfilename(title = 'Selecione o arquivo texto ou csv com os números dos processos', initialdir = '.')
 
 if __name__ == '__main__':
   Main()
