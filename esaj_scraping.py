@@ -172,7 +172,7 @@ def extrai_dados(lista_consulta):
         driver.quit()
 
 def criar_planilha():
-    columns = ['Número do processo', 'Assunto', 'Foro', 'Classe', 'Varé', 'Juiz', 'Distribuição', 'Controle', 'Área', 'Valor da Ação', 'Requerentes', 'Requeridos', 'Autor', 'Indiciado', 'Averiguado'] 
+    columns = ['Número do processo', 'Assunto', 'Foro', 'Classe', 'Varé', 'Juiz', 'Distribuição', 'Controle', 'Área', 'Valor da Ação', 'Requerentes', 'Requeridos', 'Autor', 'Indiciado', 'Averiguado', 'Exeqte', 'Exectda'] 
 
 def Main():
     root = Tk()
