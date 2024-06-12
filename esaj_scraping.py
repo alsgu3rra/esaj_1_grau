@@ -1,8 +1,8 @@
 from selenium import webdriver
-from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.options import Options
-from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 from tkinter import filedialog, Tk
 from datetime import datetime
 from selenium.common.exceptions import NoSuchElementException
@@ -45,14 +45,17 @@ def ler_arquivo(path_do_arquivo):
 
 def extrai_dados(lista_consulta):
     for n_processo in lista_consulta: 
-        firefox_service = Service(GeckoDriverManager().install())
-        firefox_options = Options()
-        firefox_options.headless = True
+        chrome_service = Service(ChromeDriverManager().install())
+        chrome_options = Options()
+        chrome_options.headless = True
 
-        driver = webdriver.Firefox(service=firefox_service, options=firefox_options)
+        driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+
         driver.get(f'https://esaj.tjsp.jus.br/cpopg/show.do?processo.codigo=9A0001V5X0000&processo.foro=334&processo.numero={n_processo}')
 
-        time.sleep(2)
+        time.sleep(1)
+
+        start_time = time.time()
 
         mais_detalhes_element = driver.find_element(By.ID, 'maisDetalhes')
         
@@ -132,21 +135,26 @@ def extrai_dados(lista_consulta):
             pass
 
         try:
-            requerentes_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Reqte")]/../../following-sibling::td[@class="nomeParteEAdvogado"]')
-            requerentes_text = requerentes_element.text.strip()
-            requerentes = requerentes_text.replace('\n', ', ')
-            
-        except:
-            pass
+            table_partes = driver.find_element(By.ID, 'tablePartesPrincipais')
 
-        try:
-            requeridos_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Reqdo")]/../../following-sibling::td[@class="nomeParteEAdvogado"]')
-            requeridos_text = requeridos_element.text.strip()
-            requeridos = requeridos_text.replace('\n', ', ')
-            
-        except:
-            pass
-            
+            linhas = table_partes.find_elements(By.TAG_NAME, 'tr')
+
+            for linha in linhas:
+                tipo_participacao = linha.find_element(By.CLASS_NAME, 'tipoDeParticipacao').text.strip()
+
+                if tipo_participacao == 'Reqte':
+                    requerentes_element = linha.find_element(By.CLASS_NAME, 'nomeParteEAdvogado')
+                    requerentes_text = requerentes_element.text.strip()
+                    requerentes = requerentes_text.replace('\n', ', ')
+                    
+                elif tipo_participacao == 'Reqdo':
+                    requeridos_element = linha.find_element(By.CLASS_NAME, 'nomeParteEAdvogado')
+                    requeridos_text = requeridos_element.text.strip()
+                    requeridos = requeridos_text.replace('\n', ', ')
+
+        except NoSuchElementException as e:
+            print(f'Elemento não encontrado: {e}')
+        
         try:
             autor_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Autor")]/../following-sibling::td[@class="nomeParteEAdvogado"]')
             autor_text = autor_element.text.strip()
@@ -192,6 +200,10 @@ def extrai_dados(lista_consulta):
             
         except:
             pass
+
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        print(f'Tempo para extrair os dados do processo {n_processo}: {elapsed_time:.2f} segundos')
 
         lista_resultados.append([n_processo, assunto, foro, classe, vara, juiz, distribuicao, controle, area, valor_acao, requerentes, requeridos, autor, indiciado, averiguado, exeqte, exectda])
 
