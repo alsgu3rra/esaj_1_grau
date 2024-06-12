@@ -5,6 +5,7 @@ from selenium.webdriver.firefox.options import Options
 from webdriver_manager.firefox import GeckoDriverManager
 from tkinter import filedialog, Tk
 from datetime import datetime
+from selenium.common.exceptions import NoSuchElementException
 import re
 import time
 
@@ -64,6 +65,8 @@ def extrai_dados(lista_consulta):
         autor = "Não Encontrado"
         indiciado = "Não Encontrado"
         averiguado = "Não Encontrado"
+        exeqte = "Não Encontrado"
+        exectda = "Não Encontrado"
 
         try:
             assunto = driver.find_element(By.ID, 'assuntoProcesso').text
@@ -167,7 +170,15 @@ def extrai_dados(lista_consulta):
         except:
             print('Não Encontrado o Averiguado do processo')
 
-        lista_resultados.append([n_processo, assunto, foro, classe, vara, juiz, distribuicao, controle, area, valor_acao, requerentes, requeridos, autor, indiciado, averiguado])
+        try:
+            exeqte_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Exeqte")]/../following-sibling::td[@class="nomeParteEAdvogado"]')
+            exeqte_text = exeqte_element.text.strip()
+            exeqte = exeqte_text.replace('\n', ', ')
+            print(f'Encontrado o Exeqte: {exeqte}')
+        except:
+            print('Não Encontrado o Exeqte do processo')
+
+        lista_resultados.append([n_processo, assunto, foro, classe, vara, juiz, distribuicao, controle, area, valor_acao, requerentes, requeridos, autor, indiciado, averiguado, exeqte, exectda])
 
         driver.quit()
 
