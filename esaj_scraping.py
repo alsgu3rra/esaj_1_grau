@@ -42,7 +42,108 @@ def extrai_dados(lista_consulta):
         driver = webdriver.Firefox(service=firefox_service, options=firefox_options)
         driver.get(f'https://esaj.tjsp.jus.br/cpopg/show.do?processo.codigo=9A0001V5X0000&processo.foro=334&processo.numero={n_processo}')
 
-        time.sleep(5)
+        time.sleep(3)
+
+        mais_detalhes_element = driver.find_element(By.ID, 'maisDetalhes')
+        driver.execute_script("arguments[0].setAttribute('class', 'collapse show')", mais_detalhes_element)
+
+        time.sleep(1)
+
+        # Expandir a seção para exibir todas as partes
+        try:
+            link_partes = driver.find_element(By.ID, 'linkpartes')
+            driver.execute_script("arguments[0].click();", link_partes)
+            time.sleep(2)  # Aguarda a expansão do conteúdo
+        except:
+            print('Não foi possível expandir a seção de partes.')
+
+        try:
+            assunto = driver.find_element(By.ID, 'assuntoProcesso').text
+            print(f'Encontrado o Assunto do Processo: {assunto}')
+        except:
+            print('Não Encontrado o Assunto do Processo')
+
+        try:
+            foro = driver.find_element(By.ID, 'foroProcesso').text
+            print(f'Encontrado o foro: {foro}')
+        except:
+            print('Não Encontrado o foro do Processo')
+
+        try:
+            classe = driver.find_element(By.ID, 'classeProcesso').text
+            print(f'Encontrado a classe: {classe}')
+        except:
+            print('Não Encontrado a classe do processo')
+
+        try:
+            vara = driver.find_element(By.ID, 'varaProcesso').text
+            print(f'Encontrado o vará : {vara}')
+        except:
+            print('Não Encontrado o vará do processo ')
+
+        try:
+            juiz = driver.find_element(By.ID, 'juizProcesso').text
+            print(f'Encontrado o Juiz: {juiz}')
+        except:
+            print('Não Encontrado o Juiz do processo')
+
+        try:
+            distribuicao = driver.find_element(By.ID, 'dataHoraDistribuicaoProcesso').text
+            print(f'Encontrado a Distribuição : {distribuicao}')
+        except:
+            print('Não Encontrado a Distribuição do processo ')
+
+        try:
+            controle = driver.find_element(By.ID, 'numeroControleProcesso').text
+            print(f'Encontrado o número de controle: {controle}')
+        except:
+            print('Não Encontrado o número de controle do Processo')
+
+        try:
+            area_element = driver.find_element(By.ID, 'areaProcesso')
+            area = area_element.find_element(By.TAG_NAME, 'span').get_attribute('title')
+            print(f'Encontrado a Área do Processo: {area}')
+        except:
+            print('Não Encontrado a Área do Processo')
+
+        try:
+            valor_acao_element = driver.find_element(By.ID, 'valorAcaoProcesso')
+            valor_acao = valor_acao_element.text.strip()
+            print(f'Encontrado o valor da ação: {valor_acao}')
+        except:
+            print('Não Encontrado o valor da ação')
+
+        try:
+            requerentes_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Reqte")]/../../following-sibling::td[@class="nomeParteEAdvogado"]')
+            requerentes_text = requerentes_element.text.strip()
+            requerentes = requerentes_text.replace('\n', ', ')
+            print(f'Encontrado os requerentes: {requerentes}')
+        except:
+            print('Não Encontrado os requerentes do processo')
+
+        try:
+            requeridos_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Reqdo")]/../../following-sibling::td[@class="nomeParteEAdvogado"]')
+            requeridos_text = requeridos_element.text.strip()
+            requeridos = requeridos_text.replace('\n', ', ')
+            print(f'Encontrado os requeridos: {requeridos}')
+        except:
+            print('Não Encontrado os requeridos do processo')
+            
+        try:
+            autor_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Autor")]/../following-sibling::td[@class="nomeParteEAdvogado"]')
+            autor_text = autor_element.text.strip()
+            autor = autor_text.replace('\n', ', ')
+            print(f'Encontrado o Autor: {autor}')
+        except:
+            print('Não Encontrado o Autor do processo')
+
+        try:
+            indiciado_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Indiciado")]/../following-sibling::td[@class="nomeParteEAdvogado"]')
+            indiciado_text = indiciado_element.text.strip()
+            indiciado = indiciado_text.replace('\n', ', ')
+            print(f'Encontrado o Indiciado: {indiciado}')
+        except:
+            print('Não Encontrado o Indiciado do processo')
 
         driver.quit()
 
