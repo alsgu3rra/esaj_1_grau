@@ -6,9 +6,15 @@ from webdriver_manager.firefox import GeckoDriverManager
 from tkinter import filedialog, Tk
 from datetime import datetime
 from selenium.common.exceptions import NoSuchElementException
+import pandas as pd
 import re
 import time
 
+print ('\nBem vindo ao eSAJ Scraping 2.0 do Pimentel & AlanGuerra!')
+print ('-------------------------------------------\n')
+
+ano = input('Entre com o ano de referência: ')
+nome_pj = input('Entre com o nome do Procurador/PJ/Grupo/Foro/Vara: ')
 
 data_e_hora_em_texto = datetime.now().strftime('%Y-%m-%d_%Hh%Mmin')
 
@@ -193,6 +199,18 @@ def extrai_dados(lista_consulta):
 def criar_planilha():
     columns = ['Número do processo', 'Assunto', 'Foro', 'Classe', 'Varé', 'Juiz', 'Distribuição', 'Controle', 'Área', 'Valor da Ação', 'Requerentes', 'Requeridos', 'Autor', 'Indiciado', 'Averiguado', 'Exeqte', 'Exectda'] 
 
+    df = pd.DataFrame(lista_resultados, columns=columns)
+
+    columns = ['Número do processo', 'Erro']
+    
+    df_erros = pd.DataFrame(lista_erros, columns=columns)
+
+    with pd.ExcelWriter(f'{nome_pj}_{ano}_resultado_dos_recursos_{data_e_hora_em_texto}.xlsx') as writer:  
+        df.to_excel(writer, sheet_name='resultados')
+        df_erros.to_excel(writer, sheet_name='erros ou não processados')
+
+    nome_arquivo_texto = f'{nome_pj}_{ano}_resultado_dos_recursos_{data_e_hora_em_texto}.txt'
+
 def Main():
     root = Tk()
     root.withdraw()
@@ -203,5 +221,9 @@ def Main():
 
     extrai_dados(lista_arquivos)
 
+    criar_planilha()
+
 if __name__ == '__main__':
     Main()
+
+    print('Programa concluído!')
