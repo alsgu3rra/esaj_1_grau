@@ -26,6 +26,8 @@ def encontra_processos (linha_de_texto):
         if r not in lista_arquivos:
             lista_arquivos.append(r) 
 
+            
+
 def abrir_navegador(url_site):
     firefox_service = Service(GeckoDriverManager().install())
 
@@ -41,13 +43,27 @@ def abrir_navegador(url_site):
 
     driver.quit()
 
+def ler_arquivo(path_do_arquivo):
+    file = open(path_do_arquivo, encoding='latin-1')
+
+    for line in file:
+       encontra_processos(line)
+
+    print(f'Encontrei {len(lista_arquivos)} processos únicos.')
+
+    print('Aguarde o processamento e a criação dos arquivos...')
+
+    return lista_arquivos
+
 def Main():
-  root = Tk()
-  root.withdraw()
+    root = Tk()
+    root.withdraw()
 
-  file = filedialog.askopenfilename(title = 'Selecione o arquivo texto ou csv com os números dos processos', initialdir = '.')
+    file = filedialog.askopenfilename(title = 'Selecione o arquivo texto ou csv com os números dos processos', initialdir = '.')
 
-  abrir_navegador(url)
+    lista_arquivos = ler_arquivo(file)
+
+    abrir_navegador(url)
 
 if __name__ == '__main__':
   Main()
