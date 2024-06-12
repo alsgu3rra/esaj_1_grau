@@ -51,7 +51,7 @@ def extrai_dados(lista_consulta):
         driver = webdriver.Firefox(service=firefox_service, options=firefox_options)
         driver.get(f'https://esaj.tjsp.jus.br/cpopg/show.do?processo.codigo=9A0001V5X0000&processo.foro=334&processo.numero={n_processo}')
 
-        time.sleep(1)
+        time.sleep(2)
 
         mais_detalhes_element = driver.find_element(By.ID, 'maisDetalhes')
         
@@ -209,7 +209,49 @@ def criar_planilha():
         df.to_excel(writer, sheet_name='resultados')
         df_erros.to_excel(writer, sheet_name='erros ou não processados')
 
+def criar_arquivo_texto():
     nome_arquivo_texto = f'{nome_pj}_{ano}_resultado_dos_recursos_{data_e_hora_em_texto}.txt'
+
+    with open(nome_arquivo_texto, 'w', encoding='utf-8') as arquivo_texto:
+        arquivo_texto.write(f'Resultado dos processos recebidos por/pelo {nome_pj} no ano {ano} julgados pelo TJSP\n\n')
+
+        for resultado in lista_resultados:
+            numero_processo = resultado[0]
+            assunto = resultado[1]
+            foro = resultado[2]
+            classe = resultado[3]
+            vara = resultado[4]
+            juiz = resultado[5]
+            distribuicao = resultado[6]
+            controle = resultado[7]
+            area = resultado[8]
+            valor_acao = resultado[9]
+            requerentes = resultado[10]
+            requeridos = resultado[11]
+            autor = resultado[12]
+            indiciado = resultado[13]
+            averiguado = resultado[14]
+            exeqte = resultado[15]
+            exectda = resultado[16]
+
+            arquivo_texto.write(f'Número do processo: {numero_processo}\n')
+            arquivo_texto.write(f'Assunto: {assunto}\n')
+            arquivo_texto.write(f'Foro: {foro}\n')
+            arquivo_texto.write(f'Classe: {classe}\n')
+            arquivo_texto.write(f'Vara: {vara}\n')
+            arquivo_texto.write(f'Juiz: {juiz}\n')
+            arquivo_texto.write(f'Distribuição: {distribuicao}\n')
+            arquivo_texto.write(f'Controle: {controle}\n')
+            arquivo_texto.write(f'Área: {area}\n')
+            arquivo_texto.write(f'Valor da Ação: {valor_acao}\n')
+            arquivo_texto.write(f'Requerentes: {requerentes}\n')
+            arquivo_texto.write(f'Requeridos: {requeridos}\n')
+            arquivo_texto.write(f'Autor: {autor}\n')
+            arquivo_texto.write(f'Indiciado: {indiciado}\n')
+            arquivo_texto.write(f'Averiguado: {averiguado}\n')
+            arquivo_texto.write(f'Exeqte: {exeqte}\n')
+            arquivo_texto.write(f'Executada: {exectda}\n')
+            arquivo_texto.write('======================================================')
 
 def Main():
     root = Tk()
@@ -222,6 +264,8 @@ def Main():
     extrai_dados(lista_arquivos)
 
     criar_planilha()
+
+    criar_arquivo_texto()
 
 if __name__ == '__main__':
     Main()
