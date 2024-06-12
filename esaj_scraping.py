@@ -45,16 +45,10 @@ def extrai_dados(lista_consulta):
         time.sleep(3)
 
         mais_detalhes_element = driver.find_element(By.ID, 'maisDetalhes')
+        
         driver.execute_script("arguments[0].setAttribute('class', 'collapse show')", mais_detalhes_element)
 
         time.sleep(1)
-
-        try:
-            link_partes = driver.find_element(By.ID, 'linkpartes')
-            driver.execute_script("arguments[0].click();", link_partes)
-            time.sleep(2)
-        except:
-            print('Não foi possível expandir a seção de partes.')
 
         try:
             assunto = driver.find_element(By.ID, 'assuntoProcesso').text
@@ -135,6 +129,13 @@ def extrai_dados(lista_consulta):
             print(f'Encontrado o Autor: {autor}')
         except:
             print('Não Encontrado o Autor do processo')
+
+        try:
+            link_partes = driver.find_element(By.ID, 'linkpartes')
+            driver.execute_script("arguments[0].click();", link_partes)
+            time.sleep(2)
+        except:
+            print('Não foi possível expandir a seção de partes.')
 
         try:
             indiciado_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Indiciado")]/../following-sibling::td[@class="nomeParteEAdvogado"]')
