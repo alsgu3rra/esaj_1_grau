@@ -178,6 +178,14 @@ def extrai_dados(lista_consulta):
         except:
             print('Não Encontrado o Exeqte do processo')
 
+        try:
+            exectda_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Exectda")]/../following-sibling::td[@class="nomeParteEAdvogado"]')
+            exectda_text = exectda_element.text.strip()
+            exectda = exectda_text.replace('\n', ', ')
+            print(f'Encontrado o Exectda: {exectda}')
+        except:
+            print('Não Encontrado o Exectda do processo')
+
         lista_resultados.append([n_processo, assunto, foro, classe, vara, juiz, distribuicao, controle, area, valor_acao, requerentes, requeridos, autor, indiciado, averiguado, exeqte, exectda])
 
         driver.quit()
