@@ -49,11 +49,10 @@ def extrai_dados(lista_consulta):
 
         time.sleep(1)
 
-        # Expandir a seção para exibir todas as partes
         try:
             link_partes = driver.find_element(By.ID, 'linkpartes')
             driver.execute_script("arguments[0].click();", link_partes)
-            time.sleep(2)  # Aguarda a expansão do conteúdo
+            time.sleep(2)
         except:
             print('Não foi possível expandir a seção de partes.')
 
