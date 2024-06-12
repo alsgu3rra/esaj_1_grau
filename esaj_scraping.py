@@ -39,6 +39,7 @@ def ler_arquivo(path_do_arquivo):
     print(f'Encontrei {len(lista_arquivos)} processos únicos.')
 
     print('Aguarde o processamento e a criação dos arquivos...')
+    print('---------------------------------------------------')
 
     return lista_arquivos
 
@@ -76,83 +77,83 @@ def extrai_dados(lista_consulta):
 
         try:
             assunto = driver.find_element(By.ID, 'assuntoProcesso').text
-            print(f'Encontrado o Assunto do Processo: {assunto}')
+            
         except:
-            print('Não Encontrado o Assunto do Processo')
+            pass
 
         try:
             foro = driver.find_element(By.ID, 'foroProcesso').text
-            print(f'Encontrado o foro: {foro}')
+            
         except:
-            print('Não Encontrado o foro do Processo')
+            pass
 
         try:
             classe = driver.find_element(By.ID, 'classeProcesso').text
-            print(f'Encontrado a classe: {classe}')
+            
         except:
-            print('Não Encontrado a classe do processo')
+            pass
 
         try:
             vara = driver.find_element(By.ID, 'varaProcesso').text
-            print(f'Encontrado o vará : {vara}')
+            
         except:
-            print('Não Encontrado o vará do processo ')
+            pass
 
         try:
             juiz = driver.find_element(By.ID, 'juizProcesso').text
-            print(f'Encontrado o Juiz: {juiz}')
+            
         except:
-            print('Não Encontrado o Juiz do processo')
+            pass
 
         try:
             distribuicao = driver.find_element(By.ID, 'dataHoraDistribuicaoProcesso').text
-            print(f'Encontrado a Distribuição : {distribuicao}')
+            
         except:
-            print('Não Encontrado a Distribuição do processo ')
+            pass
 
         try:
             controle = driver.find_element(By.ID, 'numeroControleProcesso').text
-            print(f'Encontrado o número de controle: {controle}')
+            
         except:
-            print('Não Encontrado o número de controle do Processo')
+            pass
 
         try:
             area_element = driver.find_element(By.ID, 'areaProcesso')
             area = area_element.find_element(By.TAG_NAME, 'span').get_attribute('title')
-            print(f'Encontrado a Área do Processo: {area}')
+            
         except:
-            print('Não Encontrado a Área do Processo')
+            pass
 
         try:
             valor_acao_element = driver.find_element(By.ID, 'valorAcaoProcesso')
             valor_acao = valor_acao_element.text.strip()
-            print(f'Encontrado o valor da ação: {valor_acao}')
+            
         except:
-            print('Não Encontrado o valor da ação')
+            pass
 
         try:
             requerentes_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Reqte")]/../../following-sibling::td[@class="nomeParteEAdvogado"]')
             requerentes_text = requerentes_element.text.strip()
             requerentes = requerentes_text.replace('\n', ', ')
-            print(f'Encontrado os requerentes: {requerentes}')
+            
         except:
-            print('Não Encontrado os requerentes do processo')
+            pass
 
         try:
             requeridos_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Reqdo")]/../../following-sibling::td[@class="nomeParteEAdvogado"]')
             requeridos_text = requeridos_element.text.strip()
             requeridos = requeridos_text.replace('\n', ', ')
-            print(f'Encontrado os requeridos: {requeridos}')
+            
         except:
-            print('Não Encontrado os requeridos do processo')
+            pass
             
         try:
             autor_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Autor")]/../following-sibling::td[@class="nomeParteEAdvogado"]')
             autor_text = autor_element.text.strip()
             autor = autor_text.replace('\n', ', ')
-            print(f'Encontrado o Autor: {autor}')
+            
         except:
-            print('Não Encontrado o Autor do processo')
+            pass
 
         try:
             link_partes = driver.find_element(By.ID, 'linkpartes')
@@ -164,33 +165,33 @@ def extrai_dados(lista_consulta):
             indiciado_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Indiciado")]/../following-sibling::td[@class="nomeParteEAdvogado"]')
             indiciado_text = indiciado_element.text.strip()
             indiciado = indiciado_text.replace('\n', ', ')
-            print(f'Encontrado o Indiciado: {indiciado}')
+            
         except:
-            print('Não Encontrado o Indiciado do processo')
+            pass
 
         try:
             averiguado_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Averiguado")]/../following-sibling::td[@class="nomeParteEAdvogado"]')
             averiguado_text = averiguado_element.text.strip()
             averiguado = averiguado_text.replace('\n', ', ')
-            print(f'Encontrado o Averiguado: {averiguado}')
+            
         except:
-            print('Não Encontrado o Averiguado do processo')
+            pass
 
         try:
             exeqte_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Exeqte")]/../following-sibling::td[@class="nomeParteEAdvogado"]')
             exeqte_text = exeqte_element.text.strip()
             exeqte = exeqte_text.replace('\n', ', ')
-            print(f'Encontrado o Exeqte: {exeqte}')
+            
         except:
-            print('Não Encontrado o Exeqte do processo')
+            pass
 
         try:
             exectda_element = driver.find_element(By.XPATH, '//span[contains(@class, "tipoDeParticipacao") and contains(text(), "Exectda")]/../following-sibling::td[@class="nomeParteEAdvogado"]')
             exectda_text = exectda_element.text.strip()
             exectda = exectda_text.replace('\n', ', ')
-            print(f'Encontrado o Exectda: {exectda}')
+            
         except:
-            print('Não Encontrado o Exectda do processo')
+            pass
 
         lista_resultados.append([n_processo, assunto, foro, classe, vara, juiz, distribuicao, controle, area, valor_acao, requerentes, requeridos, autor, indiciado, averiguado, exeqte, exectda])
 
@@ -250,8 +251,8 @@ def criar_arquivo_texto():
             arquivo_texto.write(f'Indiciado: {indiciado}\n')
             arquivo_texto.write(f'Averiguado: {averiguado}\n')
             arquivo_texto.write(f'Exeqte: {exeqte}\n')
-            arquivo_texto.write(f'Executada: {exectda}\n')
-            arquivo_texto.write('======================================================')
+            arquivo_texto.write(f'Executada: {exectda}\n\n')
+            arquivo_texto.write('======================================================\n\n')
 
 def Main():
     root = Tk()
