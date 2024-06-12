@@ -6,6 +6,14 @@ from webdriver_manager.firefox import GeckoDriverManager
 import time
 
 
+data_e_hora_em_texto = datetime.now().strftime('%Y-%m-%d_%Hh%Mmin')
+
+lista_consulta = []
+lista_resultados = []
+lista_erros = []
+lista_inconclusivos = []
+lista_arquivos = []
+
 def Main():
   firefox_service = Service(GeckoDriverManager().install())
 
@@ -19,7 +27,7 @@ def Main():
 
   driver.get(url)
 
-  time.sleep(3)
+  time.sleep(5)
 
   driver.quit()
 
