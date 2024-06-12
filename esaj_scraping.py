@@ -16,7 +16,9 @@ lista_erros = []
 lista_inconclusivos = []
 lista_arquivos = []
 
-def abrir_navegador():
+url = "https://esaj.tjsp.jus.br/cpopg"
+
+def abrir_navegador(url_site):
   firefox_service = Service(GeckoDriverManager().install())
 
   firefox_options = Options()
@@ -25,9 +27,7 @@ def abrir_navegador():
 
   driver = webdriver.Firefox(service=firefox_service, options=firefox_options)
 
-  url = "https://esaj.tjsp.jus.br/cpopg/show.do?processo.codigo=9A0001VSZ0000&processo.foro=334&processo.numero=1000664-45.2024.8.26.0334"
-
-  driver.get(url)
+  driver.get(url_site)
 
   time.sleep(5)
 
@@ -38,6 +38,8 @@ def Main():
   root.withdraw()
 
   file = filedialog.askopenfilename(title = 'Selecione o arquivo texto ou csv com os números dos processos', initialdir = '.')
+
+  abrir_navegador(url)
 
 if __name__ == '__main__':
   Main()
